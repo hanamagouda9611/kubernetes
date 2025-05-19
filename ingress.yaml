@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tileserver-ingress
+spec:
+  rules:
+  - host: www.imargtechnologies.com
+    http:
+      paths:
+      - path: /data/COASTAL_LAND_0_15/
+        pathType: Prefix
+        backend:
+          service:
+            name: tileserver-gl-service-coastal
+            port:
+              number: 80
+      - path: /data/ADMIN_BOUNDARY_3/
+        pathType: Prefix
+        backend:
+          service:
+            name: tileserver-gl-service-admin
+            port:
+              number: 80
+      - path: /data/DEDUCE_INDIA_ROADS_V1_1_5_15/
+        pathType: Prefix
+        backend:
+          service:
+            name: tileserver-gl-service-road
+            port:
+              number: 80
+      - path: /data/DEDUCE_LITE_3/
+        pathType: Prefix
+        backend:
+          service:
+            name: tileserver-gl-service-deduce
+            port:
+              number: 80
+      - path: /data/DEDUCE_1/
+        pathType: Prefix
+        backend:
+          service:
+            name: tileserver-gl-service-deduce1
+            port:
+              number: 80

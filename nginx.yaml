@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        volumeMounts:
+        - name: cache-volume
+          mountPath: /cache
+        - name: cache-config-volume
+          mountPath: /etc/nginx/conf.d
+          subPath: nginx-cache.conf
+        ports:
+        - containerPort: 80
+      volumes:
+      - name: cache-volume
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-cache
+      - name: cache-config-volume
+        configMap:
+          name: tileserver-cache-config

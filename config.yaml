@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tileserver-cache-config
+data:
+  nginx-cache.conf: |
+    proxy_cache_path /cache levels=1:2 keys_zone=tiles_cache:10m max_size=10g inactive=24h use_temp_path=off;
+
+    server {
+    listen 80;
+    location / {
+        # Only cache vector tiles (.pbf)
+        if ($uri ~* \.pbf$) {
+            proxy_cache tiles_cache;
+            proxy_cache_valid 200 1h;
+            proxy_cache_valid 404 1m;
+            proxy_cache_use_stale error timeout updating;
+        }
+
+        proxy_pass http://localhost:8090;  # TileServer runs on localhost inside the pod
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+    } 
+

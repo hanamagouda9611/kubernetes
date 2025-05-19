@@ -1,0 +1,289 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: tileserver-gl-deployment
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: tileserver-gl
+#   template:
+#     metadata:
+#       labels:
+#         app: tileserver-gl
+#     spec:
+#       containers:
+#       - name: tileserver-gl
+#         image: klokantech/tileserver-gl:latest
+#         ports:
+#         - containerPort: 80
+#         args:
+#           - "--mbtiles"
+#           - "/data/tiles/INDIA3.mbtiles" # Adjust to the correct .mbtiles filename
+#         volumeMounts:
+#         - name: tileserver-data
+#           mountPath: /data/tiles # This path will be the location where the volume is mounted in the pod
+#         resources:
+#             requests:
+#               cpu: "500m"  # Minimum CPU guaranteed
+#               memory: "1Gi"  # Minimum memory guaranteed
+#             limits:
+#               cpu: "1"  # Maximum CPU allowed
+#               memory: "1Gi"  # Maximum memory allowed
+#       volumes:
+#       - name: tileserver-data
+#         persistentVolumeClaim:
+#           claimName: tileserver-pvc # PVC name defined earlier
+
+# ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tileserver-gl-deployment-coastal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tileserver-gl-coastal
+  template:
+    metadata:
+      labels:
+        app: tileserver-gl-coastal
+    spec:
+      containers:
+      - name: tileserver-gl-coastal
+        image: klokantech/tileserver-gl:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        args:
+          - "--mbtiles"
+          - "/data/tiles/COASTAL_LAND_0_15.mbtiles" # Adjust to the correct .mbtiles filename
+        volumeMounts:
+        - name: tileserver-data-coastal
+          mountPath: /data/tiles # This path will be the location where the volume is mounted in the pod
+        - name: cache-volume
+          mountPath: /cache  # Mount path for cache
+        - name: cache-config-volume
+          mountPath: /etc/nginx/conf.d # Path to load the caching config
+          subPath: nginx-cache.conf    # Specify the filename in ConfigMap
+        resources:
+            requests:
+              cpu: "500m"  # Minimum CPU guaranteed
+              memory: "500Mi"  # Minimum memory guaranteed
+            limits:
+              cpu: "1"  # Maximum CPU allowed
+              memory: "1Gi"  # Maximum memory allowed
+      volumes:
+      - name: tileserver-data-coastal
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-coastal # PVC name defined earlier
+      - name: cache-volume
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-cache  # PVC for cache
+      - name: cache-config-volume
+        configMap:
+          name: tileserver-cache-config # ConfigMap defined earlier
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tileserver-gl-deployment-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tileserver-gl-admin
+  template:
+    metadata:
+      labels:
+        app: tileserver-gl-admin
+    spec:
+      containers:
+      - name: tileserver-gl-admin
+        image: klokantech/tileserver-gl:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        args:
+          - "--mbtiles"
+          - "/data/tiles/ADMIN_BOUNDARY_3.mbtiles" # Adjust to the correct .mbtiles filename
+        volumeMounts:
+        - name: tileserver-data-admin
+          mountPath: /data/tiles # This path will be the location where the volume is mounted in the pod
+        - name: cache-volume
+          mountPath: /cache  # Mount path for cache
+        - name: cache-config-volume
+          mountPath: /etc/nginx/conf.d # Path to load the caching config
+          subPath: nginx-cache.conf    # Specify the filename in ConfigMap
+        resources:
+            requests:
+              cpu: "500m"  # Minimum CPU guaranteed
+              memory: "500Mi"  # Minimum memory guaranteed
+            limits:
+              cpu: "1"  # Maximum CPU allowed
+              memory: "1Gi"  # Maximum memory allowed
+      volumes:
+      - name: tileserver-data-admin
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-admin # PVC name defined earlier
+      - name: cache-volume
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-cache  # PVC for cache
+      - name: cache-config-volume
+        configMap:
+          name: tileserver-cache-config # ConfigMap defined earlier
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tileserver-gl-deployment-road
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tileserver-gl-road
+  template:
+    metadata:
+      labels:
+        app: tileserver-gl-road
+    spec:
+      containers:
+      - name: tileserver-gl-road
+        image: klokantech/tileserver-gl:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        args:
+          - "--mbtiles"
+          - "/data/tiles/DEDUCE_INDIA_ROADS_V1_1_5_15.mbtiles" # Adjust to the correct .mbtiles filename
+        volumeMounts:
+        - name: tileserver-data-road
+          mountPath: /data/tiles # This path will be the location where the volume is mounted in the pod
+        - name: cache-volume
+          mountPath: /cache  # Mount path for cache
+        - name: cache-config-volume
+          mountPath: /etc/nginx/conf.d # Path to load the caching config
+          subPath: nginx-cache.conf    # Specify the filename in ConfigMap
+        resources:
+            requests:
+              cpu: "500m"  # Minimum CPU guaranteed
+              memory: "500Mi"  # Minimum memory guaranteed
+            limits:
+              cpu: "1"  # Maximum CPU allowed
+              memory: "1Gi"  # Maximum memory allowed
+      volumes:
+      - name: tileserver-data-road
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-road # PVC name defined earlier
+      - name: cache-volume
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-cache  # PVC for cache
+      - name: cache-config-volume
+        configMap:
+          name: tileserver-cache-config # ConfigMap defined earlier
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tileserver-gl-deployment-deduce
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tileserver-gl-deduce
+  template:
+    metadata:
+      labels:
+        app: tileserver-gl-deduce
+    spec:
+      containers:
+      - name: tileserver-gl-deduce
+        image: klokantech/tileserver-gl:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        args:
+          - "--mbtiles"
+          - "/data/tiles/DEDUCE_LITE_3.mbtiles" # Adjust to the correct .mbtiles filename
+        volumeMounts:
+        - name: tileserver-data-deduce
+          mountPath: /data/tiles  # This path will be the location where the volume is mounted in the pod
+        - name: cache-volume
+          mountPath: /cache  # Mount path for cache
+        - name: cache-config-volume
+          mountPath: /etc/nginx/conf.d # Path to load the caching config
+          subPath: nginx-cache.conf    # Specify the filename in ConfigMap
+        resources:
+            requests:
+              cpu: "500m"  # Minimum CPU guaranteed
+              memory: "500Mi"  # Minimum memory guaranteed
+            limits:
+              cpu: "1"  # Maximum CPU allowed
+              memory: "1Gi"  # Maximum memory allowed
+      volumes:
+      - name: tileserver-data-deduce
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-deduce # PVC name defined earlier
+      - name: cache-volume
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-cache  # PVC for cache
+      - name: cache-config-volume
+        configMap:
+          name: tileserver-cache-config # ConfigMap defined earlier
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tileserver-gl-deployment-deduce1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tileserver-gl-deduce1
+  template:
+    metadata:
+      labels:
+        app: tileserver-gl-deduce1
+    spec:
+      containers:
+      - name: tileserver-gl-deduce1
+        image: klokantech/tileserver-gl:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+        args:
+          - "--mbtiles"
+          - "/data/tiles/DEDUCE_1.mbtiles" # Adjust to the correct .mbtiles filename
+        volumeMounts:
+        - name: tileserver-data-deduce1
+          mountPath: /data/tiles  # This path will be the location where the volume is mounted in the pod
+        - name: cache-volume
+          mountPath: /cache # Mount path for cache
+        - name: cache-config-volume
+          mountPath: /etc/nginx/conf.d # Path to load the caching config
+          subPath: nginx-cache.conf    # Specify the filename in ConfigMap
+        resources:
+            requests:
+              cpu: "500m"  # Minimum CPU guaranteed
+              memory: "700Mi"  # Minimum memory guaranteed
+            limits:
+              cpu: "1"  # Maximum CPU allowed
+              memory: "1Gi"  # Maximum memory allowed
+      volumes:
+      - name: tileserver-data-deduce1
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-deduce1 # PVC name defined earlier
+      - name: cache-volume
+        persistentVolumeClaim:
+          claimName: tileserver-pvc-cache  # PVC for cache
+      - name: cache-config-volume
+        configMap:
+          name: tileserver-cache-config # ConfigMap defined earlier
+
+
+

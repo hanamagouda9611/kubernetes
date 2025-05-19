@@ -1,0 +1,105 @@
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: tileserver-pv
+# spec:
+#   capacity:
+#     storage: 20Gi
+#   accessModes:
+#     - ReadWriteOnce
+#   persistentVolumeReclaimPolicy: Retain
+#   storageClassName: fast-ssd   # Add this line to match PVC
+#   hostPath:
+#     path: /data/tiles  # Path where .mbtiles are stored
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tileserver-pv-coastal
+spec:
+  capacity:
+    storage: 200Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: fast-ssd   # Add this line to match PVC
+  hostPath:
+    path: /data/tiles  # Path where .mbtiles are stored
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tileserver-pv-admin
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: fast-ssd   # Add this line to match PVC
+  hostPath:
+    path: /data/tiles # Path where .mbtiles are stored
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tileserver-pv-road
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: fast-ssd   # Add this line to match PVC
+  hostPath:
+    path: /data/tiles  # Path where .mbtiles are stored
+
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tileserver-pv-deduce
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: fast-ssd   # Add this line to match PVC
+  hostPath:
+    path: /data/tiles # Path where .mbtiles are stored
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tileserver-pv-deduce1
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: fast-ssd
+  hostPath:
+    path: /data/tiles  # Path on the node to store tiles
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tileserver-pv-cache
+spec:
+  capacity:
+    storage: 100Gi  # Adjust size as necessary
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: fast-ssd  # Match the storage class
+  hostPath:
+    path: /cache # Path on the node where the cache will be stored
