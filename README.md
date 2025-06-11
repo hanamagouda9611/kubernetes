@@ -1,6 +1,6 @@
 
 # 📦 Kubernetes YAML Manifests
-
+# 📦 Kubernetes YAML examples
 This repository contains a collection of Kubernetes manifests and utility scripts to deploy, configure, and manage applications and infrastructure components in a Kubernetes cluster.
 
 ---
@@ -39,4 +39,4 @@ kubectl apply -f .
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/hanamagouda9611/kubernetes.git
+git clone https://github.com/hanamagouda9611/kubernetes-yaml-examples.git
