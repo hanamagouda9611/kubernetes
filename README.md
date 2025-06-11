@@ -23,19 +23,22 @@ This repository contains a collection of Kubernetes manifests and utility script
 
 ---
 
-## 🚀 Usage
+## 🚀 Quick Start 
 
-### 1. Apply All Resources
-
-```bash
-kubectl apply -f .
-
-
----
-
-## 🚀 Quick Start
-
-### 1. Clone the Repo
+###  Clone the Repo
 
 ```bash
 git clone https://github.com/hanamagouda9611/kubernetes-yaml-examples.git
+```
+
+---
+
+## 🚀 Usage
+
+### Apply All Resources
+
+```bash
+kubectl apply -f .
+```
+
+
