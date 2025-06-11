@@ -1,6 +1,5 @@
 
-# 📦 Kubernetes YAML Manifests
-# 📦 Kubernetes YAML examples
+# 📦 Kubernetes YAML Manifests / Examples
 This repository contains a collection of Kubernetes manifests and utility scripts to deploy, configure, and manage applications and infrastructure components in a Kubernetes cluster.
 
 ---
